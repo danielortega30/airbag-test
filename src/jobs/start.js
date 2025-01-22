@@ -1,15 +1,27 @@
-const Bull = require('bull');
-const Tournament = require('../models/Tournament');
+const schedule = require('node-schedule');
 
-const startQueue = new Bull('startAutomatically');
 
-startQueue.process(async (job) => {
-  const torneo = await Tournament.findById(job.data.torneoId).populate('matches');
-  if (torneo && new Date(torneo.startDate).toDateString() === new Date().toDateString()) {
-    torneo.status = 'IN_PROGRESS';
-    await torneo.save();
-    console.log(`Tournament ${torneo.name} started.`);
+exports.scheduleTournamentJob = (tournament) => {
+  const startDate = new Date(tournament.startDate);
+
+  if (startDate <= new Date()) {
+    console.log(`La fecha de inicio para el torneo ${tournament.name} ya pasó. No se programará.`);
+    return;
   }
-});
 
-module.exports = startQueue;
+    schedule.scheduleJob(startDate, async () => {
+    console.log(`Ejecutando inicio programado para el torneo: ${tournament.name}`);
+
+    tournament.status = 'IN_PROGRESS';
+    await tournament.save();
+
+    await Match.updateMany(
+      { tournamentId: tournament._id },
+      { status: 'IN_PROGRESS' }
+    );
+
+    console.log(`Torneo "${tournament.name}" y sus partidas pasaron a IN_PROGRESS.`);
+  });
+
+  console.log(`Job programado para el torneo "${tournament.name}" a las ${startDate}.`);
+};
