@@ -5,7 +5,7 @@ const matchValidationSchema = Joi.object({
   player1: Joi.string().required(),
   player2: Joi.string().required(),
   status: Joi.string().valid('PENDING', 'IN_PROGRESS', 'COMPLETED', 'TIMEOUT').default('PENDING'),
-  winner: Joi.string().allow(null), // Permitir que winner sea null
+  winner: Joi.string().allow(null), 
   score: Joi.object({
     player1Score: Joi.number().default(0),
     player2Score: Joi.number().default(0)
