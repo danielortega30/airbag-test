@@ -6,7 +6,17 @@ const Tournament = require('../models/Tournament');
 
 exports.makeTournament =  async (req, res) => {
   try {
-    const tournament = new Tournament(req.body);
+
+    const { error, value } = tournamentValidationSchema.validate(req.body, { abortEarly: false });
+
+    if (error) {
+      return res.status(400).json({
+        message: 'Error de validación',
+        details: error.details.map((detail) => detail.message),
+      });
+    }
+
+    const tournament = new Tournament(value);
     await tournament.save();
 
     startQueue.add({ torneoId: tournament._id, startDate: tournament.startDate });

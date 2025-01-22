@@ -1,9 +1,20 @@
 const Match = require('../models/Match');
+const { matchValidationSchema } = require('../validation/matchValidation');
 
 exports.makeMatch = async (req, res) => {
   try {
 
-    const { player1, player2 } = req.body;
+    const { error, value } = matchValidationSchema.validate(req.body, { abortEarly: false });
+
+    if (error) {
+      return res.status(400).json({
+        message: 'Error de validación',
+        details: error.details.map((detail) => detail.message),
+      });
+    }
+
+
+    const { player1, player2 } = value;
 
     const existingMatch = await Match.findOne({
       $or: [
@@ -24,7 +35,7 @@ exports.makeMatch = async (req, res) => {
       });
     }
 
-    const match = new Match(req.body);
+    const match = new Match(value);
     await match.save();
     res.status(201).json(match);
   } catch (err) {
