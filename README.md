@@ -32,7 +32,7 @@ npm start
 
 - [Rutas de Torneos](#http://localhost:3000/tournaments)
   - [Crear un Torneo](#http://localhost:3000/tournaments) POST
-  - [Obtener Todos los Torneos](#http://localhost:3000/tournaments) GET
+  - [Obtener Todos los Torneos](#http://localhost:3000/tournaments) GET queryParam startDate & status
   
 - [Rutas de Partidas](#http://localhost:3000/matches)
   - [Crear una Partida](#http://localhost:3000/matches) POST

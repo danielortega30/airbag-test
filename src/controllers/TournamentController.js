@@ -30,12 +30,27 @@ exports.makeTournament =  async (req, res) => {
 
 exports.getTournaments = async (req, res) => {
   try {
-    console.log('aqui llego')
-    const tournaments = await Tournament.find();
-    console.log('aqui llego')
+
+    const { status, startDate } = req.query; 
+
+    let filter = {};
+
+    if (status) {
+      filter.status = status; 
+    }
+
+    if (startDate) {
+      const startDateObj = new Date(startDate);
+      if (!isNaN(startDateObj.getTime())) { 
+        filter.startDate = { $gte: startDateObj }; 
+      } else {
+        return res.status(400).json({ error: 'Formato de fecha inválido' });
+      }
+    }
+    
+    const tournaments = await Tournament.find(filter);
     res.status(200).json(tournaments);
   } catch (err) {
-    console.log('aqui llego')
     res.status(500).json({ error: err.message });
   }
 }
