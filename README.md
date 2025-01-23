@@ -49,7 +49,7 @@ npm start
   "startDate": "2025-02-15T10:00:00Z",
   "status": "PENDING",
   "participants": 16,
-  "matches": []  // Inicialmente vacío, luego puedes agregar los partidos
+  "matches": [] 
 }
 ```
 
