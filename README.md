@@ -38,15 +38,8 @@ npm start
   - [Crear una Partida](#http://localhost:3000/matches) POST
   - [Obtener Todas las Partidas](#obtener-todas-las-partidas) GET
 
-## Body ejemplo Torneo
 
-{
-  "name": "Campeonato Nacional 2025",
-  "startDate": "2025-02-15T10:00:00Z",
-  "status": "PENDING",
-  "participants": 16,
-  "matches": []  // Inicialmente vacío, luego puedes agregar los partidos
-}
+```
 
 
 ## Body ejemplo Torneo
