@@ -2,6 +2,7 @@
 const { scheduleTournamentJob } = require('../jobs/start');
 const Match = require('../models/Match');
 const Tournament = require('../models/Tournament');
+const { tournamentValidationSchema } = require('../validation/tournamentValidation');
 
 
 exports.makeTournament =  async (req, res) => {
@@ -19,7 +20,6 @@ exports.makeTournament =  async (req, res) => {
     const tournament = new Tournament(value);
     await tournament.save();
 
-    startQueue.add({ torneoId: tournament._id, startDate: tournament.startDate });
     scheduleTournamentJob(tournament);
 
     res.status(201).json(tournament);
@@ -30,9 +30,12 @@ exports.makeTournament =  async (req, res) => {
 
 exports.getTournaments = async (req, res) => {
   try {
-    const tournaments = await Tournament.find().populate('matches');
+    console.log('aqui llego')
+    const tournaments = await Tournament.find();
+    console.log('aqui llego')
     res.status(200).json(tournaments);
   } catch (err) {
+    console.log('aqui llego')
     res.status(500).json({ error: err.message });
   }
 }

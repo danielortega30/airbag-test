@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const torneoSchema = new mongoose.Schema({
+const tournamentSchema = new mongoose.Schema({
   name: { type: String, required: true },
   startDate: { type: Date, required: true },
   status: { type: String, enum: ['PENDING', 'IN_PROGRESS', 'COMPLETED'], default: 'PENDING' },
@@ -8,4 +8,4 @@ const torneoSchema = new mongoose.Schema({
   matches: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Match' }]
 });
 
-module.exports = mongoose.model('Tournament', torneoSchema);
+module.exports = mongoose.model('Tournament', tournamentSchema);
